@@ -144,7 +144,6 @@ vendor/bin/generate-excludes generate-config
 ```php
 // generate-excludes.inc.php
 return [
-    Option::EMULATE_PHP_VERSION => Option::PHP_8_0,
     Option::OUTPUT_DIR => __DIR__.'/excludes',
     Option::FILES => [
     

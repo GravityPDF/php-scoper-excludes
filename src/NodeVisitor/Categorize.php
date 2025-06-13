@@ -174,7 +174,7 @@ final class Categorize extends NodeVisitorAbstract
     private function addDefineConstantNames(Node $node) :void
     {
         if ( ! isset($node->expr->args)) {
-            throw new RuntimeException("define() declaration has no constant name.");
+	        return;
         }
         
         try {

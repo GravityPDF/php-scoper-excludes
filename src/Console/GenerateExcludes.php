@@ -102,7 +102,6 @@ final class GenerateExcludes extends Command
         );
         
         $generator = $this->newGenerator(
-            $config,
             $output_dir = $config[Option::OUTPUT_DIR] ?? getcwd()
         );
         
@@ -139,15 +138,10 @@ final class GenerateExcludes extends Command
         return Command::SUCCESS;
     }
     
-    private function newGenerator(array $config, string $output_dir) :ExclusionListGenerator
+    private function newGenerator(string $output_dir) :ExclusionListGenerator
     {
-        $prefer = $config[Option::PREFER_PHP_VERSION] ?? ParserFactory::PREFER_PHP7;
-        $emulate_version = $config[Option::EMULATE_PHP_VERSION] ?? Option::PHP_8_0;
-        
-        $lexer = new Emulative(['phpVersion' => $emulate_version]);
-        
-        $parser = (new ParserFactory())->create($prefer, $lexer);
-        
+        $parser = (new ParserFactory())->createForNewestSupportedVersion();
+
         return new ExclusionListGenerator($parser, $output_dir);
     }
     

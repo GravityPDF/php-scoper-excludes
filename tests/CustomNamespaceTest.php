@@ -6,7 +6,6 @@ namespace Snicco\PhpScoperExcludes\Tests;
 
 use PhpParser\ParserFactory;
 use InvalidArgumentException;
-use PhpParser\Lexer\Emulative;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Finder\Finder;
 use Snicco\PhpScoperExcludes\ExclusionListGenerator;
@@ -29,10 +28,7 @@ final class CustomNamespaceTest extends TestCase
         $this->stub = __DIR__.'/fixtures/wp-cli-stubs.php';
         $this->dump_to = __DIR__.'/dump';
         $this->cleanDir();
-        $parser = (new ParserFactory())->create(
-            ParserFactory::PREFER_PHP7,
-            new Emulative(['phpVersion' => '8.0'])
-        );
+        $parser = (new ParserFactory())->createForNewestSupportedVersion();
         $this->dumper = new ExclusionListGenerator($parser, $this->dump_to);
     }
     
@@ -48,10 +44,7 @@ final class CustomNamespaceTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Directory [$this->dump_to/bogus] does not exist.");
         
-        $parser = (new ParserFactory())->create(
-            ParserFactory::PREFER_PHP7,
-            new Emulative(['phpVersion' => '8.0'])
-        );
+        $parser = (new ParserFactory())->createForNewestSupportedVersion();
         
         $d = new ExclusionListGenerator($parser, $this->dump_to.'/bogus');
     }
