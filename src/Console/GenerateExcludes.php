@@ -106,10 +106,15 @@ final class GenerateExcludes extends Command
                 $count > 1 ? 'files' : 'file'
             )
         );
+
+	    $output_dir = $config[Option::OUTPUT_DIR] ?? getcwd();
+
+		/* Try create the directory if it does not exist */
+		if ( ! is_dir($output_dir)) {
+			mkdir( $output_dir, 0755, true );
+		}
         
-        $generator = $this->newGenerator(
-            $output_dir = $config[Option::OUTPUT_DIR] ?? getcwd()
-        );
+        $generator = $this->newGenerator($output_dir);
         
         $progress_bar = $this->newProgressBar($output, $count);
         $progress_bar->setMessage(basename($files[0]));
