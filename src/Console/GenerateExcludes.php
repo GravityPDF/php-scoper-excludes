@@ -54,6 +54,12 @@ final class GenerateExcludes extends Command
             InputOption::VALUE_NONE,
             'Require at least one type of(interface,class,trait,constant,function) to be present in order for the file being dumped.',
         );
+		$this->addOption(
+			'config',
+			null,
+			InputOption::VALUE_REQUIRED,
+			'The path to a config file.',
+		);
     }
     
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -62,7 +68,7 @@ final class GenerateExcludes extends Command
         
         $io->title("Generating exclusion lists.");
         
-        $config = $this->repository_root.'/generate-excludes.inc.php';
+        $config = $input->getOption('config') ?: $this->repository_root.'/generate-excludes.inc.php';
         if ( ! is_file($config)) {
             $io->error([
                 "Configuration file not found at path [$config].",
