@@ -60,6 +60,12 @@ final class GenerateExcludes extends Command
 			InputOption::VALUE_REQUIRED,
 			'The path to a config file.',
 		);
+		$this->addOption(
+			'out',
+			null,
+			InputOption::VALUE_REQUIRED,
+			'The path to the output directory (takes precedent over config file).'
+		);
     }
     
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -68,7 +74,7 @@ final class GenerateExcludes extends Command
         
         $io->title("Generating exclusion lists.");
         
-        $config = $input->getOption('config') ?: $this->repository_root.'/generate-excludes.inc.php';
+        $config = $input->getOption('config') ?? $this->repository_root.'/generate-excludes.inc.php';
         if ( ! is_file($config)) {
             $io->error([
                 "Configuration file not found at path [$config].",
@@ -107,7 +113,7 @@ final class GenerateExcludes extends Command
             )
         );
 
-	    $output_dir = $config[Option::OUTPUT_DIR] ?? getcwd();
+	    $output_dir = $input->getOption('out') ?? $config[Option::OUTPUT_DIR] ?? getcwd();
 
 		/* Try create the directory if it does not exist */
 		if ( ! is_dir($output_dir)) {
