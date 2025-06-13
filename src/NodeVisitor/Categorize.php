@@ -74,7 +74,11 @@ final class Categorize extends NodeVisitorAbstract
             return;
         }
         
-        if ($node instanceof Node\Stmt\Expression) {
+        if ($node instanceof Node\Stmt\Expression
+            && $node->expr instanceof Node\Expr\FuncCall
+            && $node->expr->name instanceof Node\Name
+            && $node->expr->name->toString() === 'define'
+        ) {
             $this->addDefineConstantNames($node);
         }
         
@@ -173,10 +177,11 @@ final class Categorize extends NodeVisitorAbstract
     
     private function addDefineConstantNames(Node $node) :void
     {
-        if ( ! isset($node->expr->args)) {
-	        return;
-        }
-        
+		if ( ! isset( $node->expr->args[0]->value->value ) ) {
+			/* likely a variable constant, or has no name. Skip */
+			return;
+		}
+
         try {
             $this->constants[] = (string) $node->expr->args[0]->value->value;
         } catch (Throwable $e) {
