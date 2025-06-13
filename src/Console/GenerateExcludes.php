@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Snicco\PhpScoperExcludes\Console;
 
 use PhpParser\ParserFactory;
-use PhpParser\Lexer\Emulative;
 use Snicco\PhpScoperExcludes\Option;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -32,9 +32,9 @@ use function iterator_to_array;
 
 use const FILTER_VALIDATE_BOOLEAN;
 
+#[AsCommand(name: 'run')]
 final class GenerateExcludes extends Command
 {
-    
     protected static $defaultName = 'run';
     private string   $repository_root;
     
@@ -56,7 +56,7 @@ final class GenerateExcludes extends Command
         );
     }
     
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         
