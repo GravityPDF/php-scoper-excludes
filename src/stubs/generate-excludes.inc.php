@@ -1,8 +1,5 @@
-<?php
+<?php declare(strict_types=1);
 
-declare(strict_types=1);
-
-use PhpParser\ParserFactory;
 use Snicco\PhpScoperExcludes\Option;
 
 return [
